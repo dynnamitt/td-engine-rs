@@ -1,5 +1,7 @@
 mod map;
-mod player; // or monster-path
+mod map_builder;
+mod player; // mouse later-on
+
 mod prelude {
     pub use bracket_lib::prelude::*;
     pub const SCREEN_WIDTH: i32 = 80;
@@ -7,6 +9,7 @@ mod prelude {
     pub const CELLS_HEIGHT: i32 = SCREEN_HEIGHT - 2;
     pub const CELLS_WIDTH: i32 = SCREEN_WIDTH - 2;
     pub use crate::map::*;
+    pub use crate::map_builder::*;
     pub use crate::player::*;
 }
 use prelude::*;
@@ -17,8 +20,10 @@ struct State {
 }
 impl State {
     fn new() -> Self {
+        let mut rng = RandomNumberGenerator::new();
+        let map_builder = MapBuilder::new(&mut rng);
         Self {
-            map: Map::new(),
+            map: map_builder.map,
             player: Player::new(Point::new(CELLS_WIDTH / 2, CELLS_HEIGHT / 2)),
         }
     }

@@ -9,7 +9,7 @@ pub enum CellType {
 
 #[derive(Debug)]
 pub struct Map {
-    cells: Vec<CellType>,
+    pub cells: Vec<CellType>,
 }
 
 impl Map {
@@ -25,7 +25,7 @@ impl Map {
                 let csp = cell_scr_point(x, y);
                 match self.cells[map_idx(x, y)] {
                     CellType::Platform => {
-                        ctx.set(csp.x, csp.y, YELLOW, BLACK, to_cp437('.'));
+                        ctx.set(csp.x, csp.y, DIMGRAY, BLACK, to_cp437('.'));
                     }
                     CellType::Vacuum => {
                         ctx.set(csp.x, csp.y, GREEN, BLACK, to_cp437('#'));
