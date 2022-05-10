@@ -29,15 +29,15 @@ impl MapBuilder {
     fn build_random_isles(&mut self, rng: &mut RandomNumberGenerator) {
         while self.islands.len() < NUM_ISLAND {
             let new_isle = Rect::with_size(
-                rng.range(1, CELLS_WIDTH - 10),
-                rng.range(1, CELLS_HEIGHT - 10),
-                rng.range(2, 10),
-                rng.range(2, 10),
+                rng.range(2, CELLS_WIDTH - 10),
+                rng.range(2, CELLS_HEIGHT - 10),
+                rng.range(3, 10),
+                rng.range(3, 10),
             );
             let overlaps = self
                 .islands
                 .iter()
-                .filter(|i| i.intersect(&new_isle))
+                .filter(|i| outset_rect(i, 1).intersect(&new_isle))
                 .count();
             if overlaps == 0 {
                 new_isle.for_each(|p| {
@@ -47,6 +47,8 @@ impl MapBuilder {
                     }
                 });
                 self.islands.push(new_isle)
+            } else {
+                println!("intersect w/ {}", overlaps);
             }
         }
     }
@@ -83,4 +85,11 @@ impl MapBuilder {
             }
         }
     }
+}
+
+fn outset_rect(r: &Rect, o: i32) -> Rect {
+    // println!("small : {:?}", r);
+    let r2 = Rect::with_size(r.x1 - o, r.y1 - o, r.width() + o * 2, r.height() + o * 2);
+    // println!("big : {:?}", r2);
+    r2
 }
