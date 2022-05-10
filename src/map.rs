@@ -25,10 +25,10 @@ impl Map {
                 let csp = cell_scr_point(x, y);
                 match self.cells[map_idx(x, y)] {
                     CellType::Platform => {
-                        ctx.set(csp.x, csp.y, DIMGRAY, BLACK, to_cp437('.'));
+                        ctx.set(csp.x, csp.y, DIMGRAY, GREEN, to_cp437('x'));
                     }
                     CellType::Vacuum => {
-                        ctx.set(csp.x, csp.y, GREEN, BLACK, to_cp437('#'));
+                        ctx.set(csp.x, csp.y, WEBGRAY, BLACK, to_cp437('.'));
                     }
                 }
             }) // end .for_each
@@ -60,5 +60,6 @@ pub fn map_idx(x: i32, y: i32) -> usize {
 pub fn cell_scr_point(x: i32, y: i32) -> Point {
     let odd_row_indent = (y % 2 != 0) as i32;
     let odd_cell_intersp = (x % 2 != 0) as i32;
-    Point::new(x + odd_row_indent + odd_cell_intersp, y)
+    // Point::new(x + odd_row_indent + odd_cell_intersp, y)
+    Point::new(x, y)
 }

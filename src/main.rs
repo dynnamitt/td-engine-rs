@@ -24,7 +24,7 @@ impl State {
         let map_builder = MapBuilder::new(&mut rng);
         Self {
             map: map_builder.map,
-            player: Player::new(Point::new(CELLS_WIDTH / 2, CELLS_HEIGHT / 2)),
+            player: Player::new(map_builder.player_start),
         }
     }
 }

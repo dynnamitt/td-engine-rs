@@ -17,7 +17,9 @@ impl MapBuilder {
         mb.fill(CellType::Vacuum);
         mb.build_random_isles(rng);
         mb.connect_bridges(rng);
+        println!("p AT {:?}", mb.player_start);
         mb.player_start = mb.islands[0].center();
+        println!("p AT {:?}", mb.player_start);
         mb
     }
     fn fill(&mut self, tile: CellType) {
