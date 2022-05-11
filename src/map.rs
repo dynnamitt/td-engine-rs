@@ -19,16 +19,17 @@ impl Map {
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
+        ctx.set_active_console(0);
         for y in 0..CELLS_HEIGHT {
             (0..CELLS_WIDTH).for_each(|x| {
                 // use ODD cells as Space(not vacuum)
                 let csp = cell_scr_point(x, y);
                 match self.cells[map_idx(x, y)] {
                     CellType::Platform => {
-                        ctx.set(csp.x, csp.y, DIMGRAY, GREEN, to_cp437('x'));
+                        ctx.set(csp.x, csp.y, DIMGRAY, GREEN, to_cp437('.'));
                     }
                     CellType::Vacuum => {
-                        ctx.set(csp.x, csp.y, WEBGRAY, BLACK, to_cp437('.'));
+                        ctx.set(csp.x, csp.y, WEBGRAY, BLACK, to_cp437('#'));
                     }
                 }
             }) // end .for_each

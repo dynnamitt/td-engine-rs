@@ -9,6 +9,7 @@ impl Player {
         Self { map_pos: cell_pos }
     }
     pub fn render(&self, ctx: &mut BTerm) {
+        ctx.set_active_console(1);
         let csp = cell_scr_point(self.map_pos.x, self.map_pos.y);
         ctx.set(csp.x, csp.y, WHITE, BLACK, to_cp437('@'));
     }
