@@ -18,20 +18,33 @@ impl Map {
             cells: vec![CellType::Platform; NUM_CELLS],
         }
     }
-    pub fn render(&self, ctx: &mut BTerm) {
+    pub fn render(&self, ctx: &mut BTerm, cam: &Camera) {
         ctx.set_active_console(0);
-        for y in 0..CELLS_HEIGHT {
-            (0..CELLS_WIDTH).for_each(|x| {
-                // use ODD cells as Space(not vacuum)
-                let csp = cell_scr_point(x, y);
-                match self.cells[map_idx(x, y)] {
-                    CellType::Platform => {
-                        ctx.set(csp.x, csp.y, DIMGRAY, GREEN, to_cp437('.'));
+        for y in cam.top_y..cam.bottom_y {
+            (cam.left_x..cam.right_x).for_each(|x| {
+                if self.in_bounds(Point::new(x, y)) {
+                    let csp = cell_scr_point(x, y);
+                    match self.cells[map_idx(x, y)] {
+                        CellType::Platform => {
+                            ctx.set(
+                                csp.x - cam.left_x,
+                                csp.y - cam.top_y,
+                                DIMGRAY,
+                                GREEN,
+                                to_cp437('.'),
+                            );
+                        }
+                        CellType::Vacuum => {
+                            ctx.set(
+                                csp.x - cam.left_x,
+                                csp.y - cam.top_y,
+                                WEBGRAY,
+                                BLACK,
+                                to_cp437('#'),
+                            );
+                        }
                     }
-                    CellType::Vacuum => {
-                        ctx.set(csp.x, csp.y, WEBGRAY, BLACK, to_cp437('#'));
-                    }
-                }
+                } // end if
             }) // end .for_each
         } // end for y in
     } // end render
@@ -57,7 +70,7 @@ pub fn map_idx(x: i32, y: i32) -> usize {
     ((y * CELLS_WIDTH) + x) as usize
 }
 
-// simulate a hex-grid
+// simulate a hex-grid , if
 pub fn cell_scr_point(x: i32, y: i32) -> Point {
     let odd_row_indent = (y % 2 != 0) as i32;
     let odd_cell_intersp = (x % 2 != 0) as i32;
