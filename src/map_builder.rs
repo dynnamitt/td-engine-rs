@@ -17,9 +17,7 @@ impl MapBuilder {
         mb.fill(CellType::Vacuum);
         mb.build_random_isles(rng);
         mb.connect_bridges(rng);
-        println!("p AT {:?}", mb.player_start);
         mb.player_start = mb.islands[0].center();
-        println!("p AT {:?}", mb.player_start);
         mb
     }
     fn fill(&mut self, tile: CellType) {
@@ -47,8 +45,6 @@ impl MapBuilder {
                     }
                 });
                 self.islands.push(new_isle)
-            } else {
-                println!("intersect w/ {}", overlaps);
             }
         }
     }
@@ -73,7 +69,7 @@ impl MapBuilder {
         use std::cmp::{max, min};
         for y in min(y1, y2)..=max(y1, y2) {
             if let Some(idx) = self.map.try_idx(Point::new(x, y)) {
-                self.map.cells[idx as usize] = CellType::Platform;
+                self.map.cells[idx] = CellType::Platform;
             }
         }
     }
@@ -81,15 +77,12 @@ impl MapBuilder {
         use std::cmp::{max, min};
         for x in min(x1, x2)..=max(x1, x2) {
             if let Some(idx) = self.map.try_idx(Point::new(x, y)) {
-                self.map.cells[idx as usize] = CellType::Platform;
+                self.map.cells[idx] = CellType::Platform;
             }
         }
     }
 }
 
 fn outset_rect(r: &Rect, o: i32) -> Rect {
-    // println!("small : {:?}", r);
-    let r2 = Rect::with_size(r.x1 - o, r.y1 - o, r.width() + o * 2, r.height() + o * 2);
-    // println!("big : {:?}", r2);
-    r2
+    Rect::with_size(r.x1 - o, r.y1 - o, r.width() + o * 2, r.height() + o * 2)
 }

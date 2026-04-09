@@ -13,15 +13,16 @@ impl Player {
         let csp = cell_scr_point(self.map_pos.x - cam.left_x, self.map_pos.y - cam.top_y);
         ctx.set(csp.x, csp.y, WHITE, BLACK, to_cp437('@'));
     }
-    pub fn update(&mut self, ctx: &mut BTerm, map: &Map, cam: &mut Camera) {
-        if let Some(key) = ctx.key {
-            let delta = match key {
-                VirtualKeyCode::Left => Point::new(-1, 0),
-                VirtualKeyCode::Right => Point::new(1, 0),
-                VirtualKeyCode::Up => Point::new(0, -1),
-                VirtualKeyCode::Down => Point::new(0, 1),
-                _ => Point::zero(),
-            };
+    pub fn update(&mut self, _ctx: &mut BTerm, map: &Map, cam: &mut Camera) {
+        let input = INPUT.lock();
+        let delta = match true {
+            _ if input.is_key_pressed(VirtualKeyCode::Left) => Point::new(-1, 0),
+            _ if input.is_key_pressed(VirtualKeyCode::Right) => Point::new(1, 0),
+            _ if input.is_key_pressed(VirtualKeyCode::Up) => Point::new(0, -1),
+            _ if input.is_key_pressed(VirtualKeyCode::Down) => Point::new(0, 1),
+            _ => Point::zero(),
+        };
+        if delta.x != 0 || delta.y != 0 {
             let new_pos = self.map_pos + delta;
             if map.can_enter(new_pos) {
                 self.map_pos = new_pos;

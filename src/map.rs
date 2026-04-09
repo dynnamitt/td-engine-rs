@@ -72,8 +72,8 @@ pub fn map_idx(x: i32, y: i32) -> usize {
 
 // simulate a hex-grid , if
 pub fn cell_scr_point(x: i32, y: i32) -> Point {
-    let odd_row_indent = (y % 2 != 0) as i32;
-    let odd_cell_intersp = (x % 2 != 0) as i32;
+    let _odd_row_indent = (y % 2 != 0) as i32;
+    let _odd_cell_intersp = (x % 2 != 0) as i32;
     // Point::new(x + odd_row_indent + odd_cell_intersp, y)
     Point::new(x, y)
 }
